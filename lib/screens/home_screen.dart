@@ -10,20 +10,19 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
   List<AppData> installedApps = [];
-  bool selectAll = false; // Status global untuk Pilih Semua
+  bool selectAll = false; 
 
   @override
   void initState() {
     super.initState();
     _getInstalledApps();
-    _loadSelectedApps(); // Memuat aplikasi yang sudah dipilih
+    _loadSelectedApps(); 
   }
 
   Future<void> _getInstalledApps() async {
-    // Mendapatkan daftar aplikasi yang terinstal
     List<Application> apps = await DeviceApps.getInstalledApplications(
-      includeAppIcons: false, // Ikon tidak perlu dimuat untuk efisiensi
-      includeSystemApps: true, // Sertakan aplikasi sistem
+      includeAppIcons: false, 
+      includeSystemApps: true, 
     );
 
     setState(() {
@@ -38,7 +37,6 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   Future<void> _saveSelectedApps() async {
-    // Menyimpan aplikasi yang dipilih
     SharedPreferences prefs = await SharedPreferences.getInstance();
     List<String> selectedApps = installedApps
         .where((app) => app.isChecked)
@@ -48,7 +46,6 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   Future<void> _loadSelectedApps() async {
-    // Memuat daftar aplikasi yang sudah dipilih dari penyimpanan
     SharedPreferences prefs = await SharedPreferences.getInstance();
     List<String>? selectedApps = prefs.getStringList('selectedApps');
     if (selectedApps != null) {
@@ -72,7 +69,6 @@ class _HomeScreenState extends State<HomeScreen> {
           ? Center(child: CircularProgressIndicator(color: Colors.green))
           : Column(
               children: [
-                // Checkbox "Pilih Semua"
                 CheckboxListTile(
                   title: Text(
                     'Pilih Semua Aplikasi',
@@ -88,7 +84,6 @@ class _HomeScreenState extends State<HomeScreen> {
                     });
                   },
                 ),
-                // Daftar Aplikasi
                 Expanded(
                   child: ListView.builder(
                     itemCount: installedApps.length,
@@ -117,9 +112,9 @@ class _HomeScreenState extends State<HomeScreen> {
             ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
-          _saveSelectedApps(); // Simpan aplikasi yang dipilih
+          _saveSelectedApps();
           ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(content: Text('Pengaturan aplikasi berhasil disimpan!')),
+            SnackBar(content: Text('Saved')),
           );
         },
         backgroundColor: Colors.green,
